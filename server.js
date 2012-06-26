@@ -6,16 +6,28 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/friendl');
 var users = require('./data/users.js');
 
-var thing = users.Users;
-console.log(thing);
-
 everyauth.twitter
     .consumerKey('nope')
     .consumerSecret('nope')
     .findOrCreateUser(function(session, accessToken, accessTokenSecret, twitterUserMetadata) {
-        console.log(twitterUserMetadata);
+        var tid = twitterUserMetadata.id;
         var promise = this.Promise();
-        users.findUserByTwitterId('2');
+
+        // check to see if this user is already registered
+        // if they are, we receive a promise fulfillment from this call
+        var user = users.findUserByTwitterId(tid, promise);
+
+        // if we don't receive a user object back, meaning that they're not registered,
+        // create a new user and fulfill the promise with this object
+        if (typeof user === 'undefined') {
+            promise.fulfill(users.createUser({
+                    name: twitterUserMetadata.name,
+                    twitterId: tid,
+                    image: twitterUserMetadata.profile_image_url
+                })
+            );
+        }
+
         return promise;
     }).redirectPath('/');
 
