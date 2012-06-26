@@ -3,13 +3,16 @@ mongoose.connect('mongodb://localhost/friendl');
 
 var Schema = mongoose.Schema;
 
-User = exports.User = new Schema({
+var User = new Schema({
     name: {type: String},
     email: {type: String},
     twitter: {type: String}
 });   
 
-Users = exports.Users = mongoose.model('User', User);
+var Users = mongoose.model('User', User);
+
+exports.User = User;
+exports.Users = Users;
 
 exports.findUserByTwitterId = function(tid) {
     Users.findOne({twitter: tid}, function(err, doc){
