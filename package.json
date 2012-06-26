@@ -4,11 +4,14 @@
   "scripts": {
     "start": "server.js"
   },
-  "version": "0.0.0",
+  "version": "0.0.0-1",
   "engines": {
     "node": "0.6.x"
   },
   "dependencies": {
-    "express": "~2.5.10"
+    "express": "~2.5.10",
+    "everyauth": "~0.2.32",
+    "n": "~0.7.2",
+    "mongoose": "~2.7.0"
   }
 }
